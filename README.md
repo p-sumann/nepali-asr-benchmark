@@ -183,22 +183,6 @@ Per-dataset citations:
 
 All evaluation uses NFC normalisation on both references and hypotheses; WER and CER are computed with [`jiwer`](https://github.com/jitsi/jiwer).
 
-## Citation
-
-```bibtex
-@article{paudel2026nepaliasr,
-  title         = {Comparative Analysis of Multilingual Pre-trained Models for Nepali Automatic Speech Recognition},
-  author        = {Paudel, Suman and Sayami, Sarbin},
-  year          = {2026},
-  month         = may,
-  eprint        = {submit/7658766},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.AI}
-}
-```
-
-> arXiv:submit/7658766 [cs.AI], 31 May 2026.
-
 ## License
 
 Model checkpoints are released for **research use only**; downstream commercial use requires
