@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Comparative Analysis of Multilingual Pre-trained Models for Nepali Automatic Speech Recognition. M.Sc. thesis by Suman Paudel, supervised by Asst. Prof. Sarbin Sayami at Institute of Science and Technology, Tribhuvan University.">
+  <meta name="keywords" content="Nepali ASR, speech recognition, Whisper, Wav2Vec2, MMS, IndicWav2Vec, low-resource, multilingual pretraining, Tribhuvan University">
+  <meta name="author" content="Suman Paudel and Sarbin Sayami">
+  <meta property="og:title" content="Comparative Analysis of Multilingual Pre-trained Models for Nepali ASR">
+  <meta property="og:description" content="One controlled benchmark, six multilingual ASR models, three Nepali test sets. Headline: a 94M Indic-pretrained model ties an 809M Whisper on in-domain Nepali.">
+  <meta property="og:type" content="website">
+  <title>Nepali ASR Benchmark · Paudel &amp; Sayami 2026</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎙️%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+Devanagari:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fg:        #1a1a1a;
+      --fg-soft:   #4a4a4a;
+      --bg:        #ffffff;
+      --bg-soft:   #f7f7f8;
+      --accent:    #d62728;          /* Nepali flag crimson */
+      --accent-2:  #003893;          /* TU blue */
+      --border:    #e3e3e6;
+      --code-bg:   #0d1117;
+      --code-fg:   #e6edf3;
+      --max-w:     880px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      color: var(--fg);
+      background: var(--bg);
+      line-height: 1.65;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 1.25rem; }
+    .nepali { font-family: 'Noto Serif Devanagari', serif; font-weight: 500; }
+
+    /* ── Hero ──────────────────────────────────────────────── */
+    header.hero {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #fbfbfd 0%, #fff 100%);
+    }
+    .eyebrow {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem;
+    }
+    h1.title {
+      font-size: clamp(1.6rem, 4.2vw, 2.4rem);
+      font-weight: 700; line-height: 1.2; margin: 0 0 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .subtitle-np {
+      font-size: 1.05rem; color: var(--fg-soft);
+      margin: 0 0 1.5rem;
+    }
+    .authors {
+      font-size: 1.05rem; margin: 0 0 0.25rem; color: var(--fg);
+    }
+    .authors strong { font-weight: 600; }
+    .affiliation { font-size: 0.92rem; color: var(--fg-soft); margin: 0 0 2rem; }
+    .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .badge {
+      font-size: 0.78rem; padding: 0.25rem 0.6rem;
+      background: var(--bg-soft); border: 1px solid var(--border); border-radius: 999px;
+      color: var(--fg-soft);
+    }
+
+    /* ── Button row ─────────────────────────────────────────── */
+    .buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.55rem 1rem;
+      font-size: 0.9rem; font-weight: 500;
+      text-decoration: none; color: var(--fg);
+      background: var(--bg);
+      border: 1.5px solid var(--fg);
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .btn:hover { background: var(--fg); color: var(--bg); }
+    .btn.primary { background: var(--fg); color: var(--bg); }
+    .btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+
+    /* ── Sections ───────────────────────────────────────────── */
+    section { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    h2 {
+      font-size: 1.35rem; font-weight: 600; margin: 0 0 1rem;
+      letter-spacing: -0.01em;
+    }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { margin: 0 0 1rem; color: var(--fg); }
+    p.lead { font-size: 1.08rem; color: var(--fg); }
+
+    /* ── Headline number cards ──────────────────────────────── */
+    .headline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0 0.5rem;
+    }
+    .stat {
+      background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem 1.1rem;
+    }
+    .stat .n {
+      font-size: 1.6rem; font-weight: 700; line-height: 1.1;
+      color: var(--accent); letter-spacing: -0.02em;
+      font-family: 'Inter', sans-serif;
+    }
+    .stat .l { font-size: 0.82rem; color: var(--fg-soft); margin-top: 0.25rem; }
+
+    /* ── Findings ───────────────────────────────────────────── */
+    .findings { display: grid; gap: 1rem; margin-top: 1rem; }
+    .finding {
+      border-left: 3px solid var(--accent);
+      padding: 0.25rem 0 0.25rem 1rem;
+    }
+    .finding strong { font-weight: 600; }
+
+    /* ── Tables ────────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; margin: 0 0 1rem; }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 0.92rem;
+    }
+    th, td {
+      padding: 0.55rem 0.7rem; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th { background: var(--bg-soft); font-weight: 600; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    td.best { color: var(--accent); font-weight: 600; }
+    tr:hover td { background: #fafafa; }
+
+    /* ── Code / BibTeX ─────────────────────────────────────── */
+    pre {
+      background: var(--code-bg); color: var(--code-fg);
+      padding: 1rem 1.1rem; border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.82rem; line-height: 1.5;
+      margin: 0 0 1rem;
+    }
+    code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; }
+    p code { background: var(--bg-soft); padding: 0.05rem 0.35rem; border-radius: 4px; }
+    .copy-row {
+      display: flex; justify-content: flex-end; margin-top: -0.5rem; margin-bottom: 0.5rem;
+    }
+    .copy-btn {
+      background: var(--bg-soft); border: 1px solid var(--border);
+      padding: 0.25rem 0.6rem; font-size: 0.78rem; border-radius: 4px;
+      cursor: pointer; color: var(--fg-soft);
+      font-family: 'Inter', sans-serif;
+    }
+    .copy-btn:hover { color: var(--fg); }
+
+    /* ── Devanagari example block ──────────────────────────── */
+    .example {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      font-family: 'Noto Serif Devanagari', serif;
+      font-size: 1.15rem;
+      color: var(--fg);
+    }
+    .example .label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem; font-weight: 500; color: var(--fg-soft);
+      text-transform: uppercase; letter-spacing: 0.05em;
+      margin-right: 0.5rem;
+    }
+
+    /* ── PDF embed ─────────────────────────────────────────── */
+    .pdf-wrap {
+      width: 100%; aspect-ratio: 8.5/11;
+      border: 1px solid var(--border); border-radius: 8px;
+      overflow: hidden; background: var(--bg-soft);
+    }
+    .pdf-wrap iframe { width: 100%; height: 100%; border: 0; }
+
+    /* ── Footer ────────────────────────────────────────────── */
+    footer {
+      padding: 2rem 0; font-size: 0.85rem; color: var(--fg-soft);
+      border-top: 1px solid var(--border); text-align: center;
+    }
+    footer a { color: var(--fg-soft); }
+
+    /* ── Responsive tweaks ─────────────────────────────────── */
+    @media (max-width: 600px) {
+      header.hero { padding: 3rem 0 2rem; }
+      section { padding: 2rem 0; }
+      .headline-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<header class="hero">
+  <div class="container">
+    <div class="eyebrow">M.Sc. thesis · Tribhuvan University · 2026</div>
+    <h1 class="title">Comparative Analysis of Multilingual Pre-trained Models for Nepali Automatic Speech Recognition</h1>
+    <p class="subtitle-np nepali">नेपाली स्वचालित वाक् पहिचानका लागि बहुभाषिक पूर्व-प्रशिक्षित मोडेलहरूको तुलनात्मक विश्लेषण</p>
+
+    <p class="authors"><strong>Suman Paudel</strong> &nbsp;·&nbsp; <strong>Asst. Prof. Sarbin Sayami</strong></p>
+    <p class="affiliation">School of Mathematical Sciences &amp; Central Department of CSIT,<br>
+      Institute of Science and Technology, Tribhuvan University, Kathmandu, Nepal</p>
+
+    <div class="badges">
+      <span class="badge">📅 Defended Jeth 13, 2083 BS · May 27, 2026</span>
+      <span class="badge">📂 cs.AI</span>
+      <span class="badge">🔓 CC-BY-NC-4.0</span>
+    </div>
+
+    <div class="buttons">
+      <a class="btn primary" href="https://arxiv.org/submit/7658766/view">📄 arXiv</a>
+      <a class="btn" href="paper/nepali_asr_benchmark.pdf">📑 PDF</a>
+      <a class="btn" href="https://github.com/p-sumann/nepali-asr-benchmark">💻 Code</a>
+      <a class="btn" href="https://huggingface.co/sumanpaudel1997">🤗 Models</a>
+      <a class="btn" href="https://huggingface.co/datasets/sumanpaudel1997/nepali-asr-benchmark">📊 Dataset</a>
+      <a class="btn" href="#bibtex">📚 BibTeX</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════ TL;DR ═══════════════════════════ -->
+<section id="tldr">
+  <div class="container">
+    <h2>TL;DR</h2>
+    <p class="lead">Six multilingual ASR models, fine-tuned on the same Nepali corpus under one protocol, evaluated on three test sets. The smallest model (94 M params, Indic-family pretrained) ties the largest (809 M, Whisper-Turbo) on in-domain accuracy — and CTC architectures run 29× faster than autoregressive ones.</p>
+
+    <div class="headline-grid">
+      <div class="stat"><div class="n">14.76%</div><div class="l">Best in-domain WER<br>(Whisper-Large-v3-Turbo)</div></div>
+      <div class="stat"><div class="n">14.89%</div><div class="l">IndicWav2Vec @ 94 M params<br>(9× smaller, ties top)</div></div>
+      <div class="stat"><div class="n">29×</div><div class="l">CTC speedup<br>vs autoregressive Whisper</div></div>
+      <div class="stat"><div class="n">~165 h</div><div class="l">Nepali fine-tuning corpus<br>(OpenSLR SLR54)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ ABSTRACT ═══════════════════════════ -->
+<section id="abstract">
+  <div class="container">
+    <h2>Abstract</h2>
+    <p>Multilingual pretrained models nominally support Nepali, yet no controlled benchmark has compared them under a single fine-tuning protocol. We fine-tune six pretrained models (XLSR-53, IndicWav2Vec, MMS-1B, Whisper-Medium, Whisper-Large-v3-Turbo, and Conformer-Hi) spanning CTC self-supervised, autoregressive encoder–decoder, and hybrid Conformer-CTC architectures, on the OpenSLR SLR54 Nepali corpus (~165 hours) using identical preprocessing, splits, optimizer, and family-matched learning-rate schedules. We evaluate Word Error Rate (WER), Character Error Rate (CER), and Real-Time Factor (RTF) on three independent test sets (OpenSLR, FLEURS, Common Voice). Whisper-Large-v3-Turbo (14.76% WER) and IndicWav2Vec (14.89% WER) tie at the top despite a 9× parameter gap and 40× pretraining-data gap, providing direct empirical evidence that <em>language-family proximity in pretraining can substitute for raw scale</em> for in-domain Nepali. CTC decoders run up to 29× faster than autoregressive Whisper at the same accuracy, flipping the practical deployment preference toward CTC under any latency budget. Massively multilingual pretraining (MMS-1B) yields the smallest out-of-domain degradation on FLEURS (+12.55 pp), indicating that scale buys robustness rather than peak in-domain accuracy. The resulting benchmark provides the first standardized, multi-model, efficiency-aware reference numbers for Nepali ASR.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ FINDINGS ═══════════════════════════ -->
+<section id="findings">
+  <div class="container">
+    <h2>Key Findings</h2>
+    <div class="findings">
+      <div class="finding">
+        <strong>1. Language-family proximity beats raw scale.</strong> IndicWav2Vec (94 M params, pretrained on Indic languages) ties Whisper-Large-v3-Turbo (809 M params) on in-domain Nepali WER — 14.89% vs 14.76%. A 9× parameter gap and a 40× pretraining-data gap collapse when the pretraining corpus actually speaks your language family.
+      </div>
+      <div class="finding">
+        <strong>2. CTC decoders are 29× faster than autoregressive Whisper at the same accuracy.</strong> For latency-sensitive Nepali ASR deployment (live captioning, IVR, on-device), CTC is the default architecture choice.
+      </div>
+      <div class="finding">
+        <strong>3. Massive multilingual pretraining buys robustness, not peak accuracy.</strong> MMS-1B has the worst in-domain WER of the six but the smallest degradation on out-of-domain FLEURS (+12.55 pp). Scale isn't accuracy — scale is generalization.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ RESULTS TABLE ═══════════════════════════ -->
+<section id="results">
+  <div class="container">
+    <h2>Headline Results</h2>
+    <p>Word Error Rate (lower is better) on three independent test sets. Best per column in <span style="color:var(--accent);font-weight:600;">red</span>.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Family</th>
+            <th>Params</th>
+            <th class="num">OpenSLR<br><span style="font-weight:400;color:var(--fg-soft);font-size:0.78rem">in-domain</span></th>
+            <th class="num">FLEURS<br><span style="font-weight:400;color:var(--fg-soft);font-size:0.78rem">curated OOD</span></th>
+            <th class="num">Common Voice<br><span style="font-weight:400;color:var(--fg-soft);font-size:0.78rem">noisy OOD</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Whisper-Large-v3-Turbo</td><td>Enc-Dec</td><td>809 M</td><td class="num best">14.76</td><td class="num">39.56</td><td class="num">48.35</td></tr>
+          <tr><td>IndicWav2Vec</td><td>CTC SSL</td><td>94 M</td><td class="num">14.89</td><td class="num">36.34</td><td class="num">42.16</td></tr>
+          <tr><td>Whisper-Medium</td><td>Enc-Dec</td><td>769 M</td><td class="num">15.57</td><td class="num">40.21</td><td class="num">49.32</td></tr>
+          <tr><td>Conformer-Hi</td><td>Hybrid CTC</td><td>30 M</td><td class="num">26.28</td><td class="num">41.67</td><td class="num">53.10</td></tr>
+          <tr><td>XLSR-53</td><td>CTC SSL</td><td>317 M</td><td class="num">26.85</td><td class="num">35.41</td><td class="num best">41.05</td></tr>
+          <tr><td>MMS-1B</td><td>CTC SSL</td><td>965 M</td><td class="num">27.28</td><td class="num best">35.10</td><td class="num">41.93</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.85rem;color:var(--fg-soft);margin-top:-0.25rem">All numbers computed after NFC normalisation, with <code>jiwer</code>, on each test set's standard test split.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ DEVANAGARI SAMPLES ═══════════════════════════ -->
+<section id="samples">
+  <div class="container">
+    <h2>Devanagari Transcription Example</h2>
+    <p>Same 3-second Common Voice clip, transcribed by each of the released checkpoints (post-NFC-normalisation). The reference uses Devanagari script; outputs are model-specific.</p>
+    <div class="example"><span class="label">Whisper-Turbo</span>साथीको घरमा भोत छ</div>
+    <div class="example"><span class="label">Whisper-Medium</span>साथीको घरमा भोत्छ</div>
+    <div class="example"><span class="label">IndicWav2Vec</span>साथीको घरमा बोध छ</div>
+    <div class="example"><span class="label">XLSR-53</span>सातीको घरमा बोध छ</div>
+    <div class="example"><span class="label">MMS-1B</span>साथीको घरमा भोग छ</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ ARTIFACTS ═══════════════════════════ -->
+<section id="artifacts">
+  <div class="container">
+    <h2>Open-Sourced Artifacts</h2>
+    <p>Everything needed to reproduce the benchmark numbers, run any of the six models on your own audio, or extend the comparison to a new model.</p>
+
+    <h3>🤗 Six fine-tuned Nepali ASR checkpoints</h3>
+    <p>Each ships with a usable inference snippet (5 lines) and full configuration. Download once, transcribe locally.</p>
+    <ul>
+      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-whisper-turbo"><code>sumanpaudel1997/nepali-asr-whisper-turbo</code></a> — best in-domain (14.76% WER)</li>
+      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-indicwav2vec"><code>sumanpaudel1997/nepali-asr-indicwav2vec</code></a> — ties top with 9× fewer params</li>
+      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-whisper-medium"><code>sumanpaudel1997/nepali-asr-whisper-medium</code></a></li>
+      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-xlsr-53"><code>sumanpaudel1997/nepali-asr-xlsr-53</code></a></li>
+      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-mms-1b"><code>sumanpaudel1997/nepali-asr-mms-1b</code></a> — best out-of-domain robustness</li>
+      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-conformer-hi"><code>sumanpaudel1997/nepali-asr-conformer-hi</code></a> — NeMo .nemo checkpoint</li>
+    </ul>
+
+    <h3>📊 Benchmark predictions dataset</h3>
+    <p>Per-utterance reference, hypothesis, WER, and CER for every (model × test set) combination — 18 parquet files in total. Lets anyone re-aggregate metrics, run error analysis, or compare a new system without re-running inference.</p>
+    <p>→ <a href="https://huggingface.co/datasets/sumanpaudel1997/nepali-asr-benchmark"><code>sumanpaudel1997/nepali-asr-benchmark</code></a></p>
+
+    <h3>💻 Reproducible inference scripts</h3>
+    <p>One script per model family in <a href="https://github.com/p-sumann/nepali-asr-benchmark"><code>github.com/p-sumann/nepali-asr-benchmark</code></a>. Training code is intentionally not released; full hyperparameters are in the paper.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ PAPER PREVIEW ═══════════════════════════ -->
+<section id="paper">
+  <div class="container">
+    <h2>Paper Preview</h2>
+    <p>Inline PDF preview · <a href="paper/nepali_asr_benchmark.pdf">download full PDF</a></p>
+    <div class="pdf-wrap">
+      <iframe src="paper/nepali_asr_benchmark.pdf#view=FitH" title="Paper PDF preview"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ BIBTEX ═══════════════════════════ -->
+<section id="bibtex">
+  <div class="container">
+    <h2>Citation</h2>
+    <p>If you use these models, the benchmark numbers, or the per-utterance dataset, please cite:</p>
+    <div class="copy-row"><button class="copy-btn" onclick="copyBib()">copy</button></div>
+<pre id="bib">@article{paudel2026nepaliasr,
+  title         = {Comparative Analysis of Multilingual Pre-trained Models for Nepali Automatic Speech Recognition},
+  author        = {Paudel, Suman and Sayami, Sarbin},
+  year          = {2026},
+  month         = may,
+  eprint        = {submit/7658766},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI}
+}</pre>
+    <p style="font-size:0.85rem;color:var(--fg-soft)">Plain-text: Paudel, S. and Sayami, S. (2026). <em>Comparative Analysis of Multilingual Pre-trained Models for Nepali Automatic Speech Recognition</em>. arXiv:submit/7658766 [cs.AI], 31 May 2026. M.Sc. thesis, Institute of Science and Technology, Tribhuvan University, Kathmandu, Nepal.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ ACKS ═══════════════════════════ -->
+<section id="acks">
+  <div class="container">
+    <h2>Acknowledgements</h2>
+    <p>This work was carried out as an M.Sc. (Data Science) thesis at the <strong>School of Mathematical Sciences, Institute of Science and Technology, Tribhuvan University</strong>, Kathmandu, Nepal, under the supervision of <strong>Asst. Prof. Sarbin Sayami</strong> (Central Department of Computer Science and Information Technology, TU). Sincere thanks to the open-source teams behind Wav2Vec 2.0, Whisper, MMS, IndicWav2Vec, and NVIDIA NeMo for the publicly released base checkpoints, and to OpenSLR, Google FLEURS, and Mozilla Common Voice for the source corpora that made this controlled comparison possible.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    © 2026 Suman Paudel · CC-BY-NC-4.0 · Hosted via GitHub Pages.<br>
+    Page template adapted from common academic project-page conventions.
+  </div>
+</footer>
+
+<script>
+  function copyBib() {
+    const text = document.getElementById('bib').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      const orig = btn.textContent;
+      btn.textContent = '✓ copied';
+      setTimeout(() => { btn.textContent = orig; }, 1500);
+    });
+  }
+</script>
+
+</body>
+</html>
