@@ -1,0 +1,23 @@
+# MacOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Editors
+.idea/
+.vscode/
+
+# Data / weights — should never enter this repo
+*.pt
+*.bin
+*.safetensors
+*.nemo
+*.ckpt
+data/
+audio/
+clips/
