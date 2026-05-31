@@ -1,0 +1,38 @@
+Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+
+Copyright (c) 2026 Suman Paudel
+
+This work — including source code, model checkpoints, and the per-utterance
+prediction dataset — is licensed under the Creative Commons Attribution-
+NonCommercial 4.0 International License.
+
+You are free to:
+  • Share  — copy and redistribute the material in any medium or format
+  • Adapt  — remix, transform, and build upon the material
+
+Under the following terms:
+  • Attribution — You must give appropriate credit, provide a link to the
+    license, and indicate if changes were made. You may do so in any
+    reasonable manner, but not in any way that suggests the licensor
+    endorses you or your use.
+  • NonCommercial — You may not use the material for commercial purposes.
+
+No additional restrictions — You may not apply legal terms or technological
+measures that legally restrict others from doing anything the license
+permits.
+
+Notices:
+  • The licences of the upstream base models (XLSR-53, IndicWav2Vec, MMS-1B,
+    Whisper-Medium, Whisper-Large-v3-Turbo, NVIDIA Conformer-Hi) and of the
+    fine-tuning corpora (OpenSLR SLR54, Google FLEURS, Mozilla Common Voice)
+    apply on top of this restriction.
+  • For commercial use, contact: dastonsuman1997@gmail.com
+
+Full legal code: https://creativecommons.org/licenses/by-nc/4.0/legalcode
+
+Cite as:
+
+  Paudel, S. and Sayami, S. (2026). Comparative Analysis of Multilingual
+  Pre-trained Models for Nepali Automatic Speech Recognition. arXiv preprint
+  arXiv:2606.XXXXX. M.Sc. thesis, Institute of Science and Technology,
+  Tribhuvan University, Kathmandu, Nepal.
