@@ -5,7 +5,8 @@
 ### A Controlled Multi-Model Comparison of Multilingual Pre-Trained ASR for Nepali
 
 [![Paper](https://img.shields.io/badge/paper-PDF-b31b1b.svg)](paper/nepali_asr_benchmark.pdf)
-[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97-Models-yellow.svg)](https://huggingface.co/sumanpaudel1997)
+[![Hugging Face Models](https://img.shields.io/badge/%F0%9F%A4%97-Models-yellow.svg)](https://huggingface.co/sumanpaudel1997)
+[![Hugging Face Dataset](https://img.shields.io/badge/%F0%9F%A4%97-Dataset-yellow.svg)](https://huggingface.co/datasets/sumanpaudel1997/nepali-asr-benchmark)
 [![License](https://img.shields.io/badge/license-Research-blue.svg)](#license)
 
 </div>
@@ -122,13 +123,54 @@ Ready-to-run scripts: see [`inference/`](inference/).
 
 Training code is intentionally not released in this repository.
 
-## Datasets
+## Benchmark Predictions Dataset
 
-- **OpenSLR SLR54** — `https://www.openslr.org/54/`
-- **FLEURS (ne_np)** — `https://huggingface.co/datasets/google/fleurs`
-- **Common Voice (ne-NP)** — `https://commonvoice.mozilla.org/ne-NP/datasets`
+The per-utterance reference, hypothesis, WER, and CER for every (model × test set)
+combination — 18 parquet files in total — is released as a Hugging Face dataset
+so anyone can re-aggregate metrics, run error analysis, or compare new systems
+without re-running inference:
 
-All evaluation is performed on the released test splits with NFC normalisation applied to both references and hypotheses; WER and CER are computed with `jiwer`.
+[`sumanpaudel1997/nepali-asr-benchmark`](https://huggingface.co/datasets/sumanpaudel1997/nepali-asr-benchmark)
+```python
+from datasets import load_dataset
+ds = load_dataset("sumanpaudel1997/nepali-asr-benchmark", split="predictions")
+```
+
+## Source Datasets (audio not redistributed; obtain from source)
+
+| Dataset | Hours | Link | Used as |
+|---|---|---|---|
+| OpenSLR SLR54 (Nepali) | ~165 | <https://www.openslr.org/54/> | training + in-domain test |
+| FLEURS (ne_np) | ~10 | <https://huggingface.co/datasets/google/fleurs> | curated OOD test |
+| Common Voice (ne-NP) | ~5 | <https://commonvoice.mozilla.org/ne-NP/datasets> | noisy OOD test |
+
+Per-dataset citations:
+
+```bibtex
+@inproceedings{kjartansson2018crowdsourced,
+  title     = {Crowd-Sourced Speech Corpora for {Javanese}, {Sundanese}, {Sinhala}, {Nepali}, and {Bangladeshi Bengali}},
+  author    = {Kjartansson, Oddur and Sarin, Supheakmungkol and Pipatsrisawat, Knot and Jansche, Martin and Ha, Linne},
+  booktitle = {Proceedings of the 6th Workshop on Spoken Language Technologies for Under-Resourced Languages (SLTU)},
+  pages     = {52--55},
+  year      = {2018}
+}
+@inproceedings{conneau2023fleurs,
+  title     = {{FLEURS}: {Few}-shot learning evaluation of universal representations of speech},
+  author    = {Conneau, Alexis and Ma, Min and Khanuja, Simran and Zhang, Yu and Axelrod, Vera and Dalmia, Siddharth and Riesa, Jason and Rivera, Clara and Bapna, Ankur},
+  booktitle = {IEEE SLT 2022},
+  pages     = {798--805},
+  year      = {2023}
+}
+@inproceedings{ardila2020common,
+  title     = {Common Voice: {A} massively-multilingual speech corpus},
+  author    = {Ardila, Rosana and Branson, Megan and Davis, Kelly and Henretty, Michael and Kohler, Michael and Meyer, Josh and Morais, Reuben and Saunders, Lindsay and Tyers, Francis M. and Weber, Gregor},
+  booktitle = {LREC 2020},
+  pages     = {4218--4222},
+  year      = {2020}
+}
+```
+
+All evaluation uses NFC normalisation on both references and hypotheses; WER and CER are computed with [`jiwer`](https://github.com/jitsi/jiwer).
 
 ## Citation
 
