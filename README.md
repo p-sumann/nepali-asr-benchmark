@@ -185,16 +185,19 @@ All evaluation uses NFC normalisation on both references and hypotheses; WER and
 
 ## Citation
 
-If you use these models or numbers, please cite:
-
 ```bibtex
-@misc{paudel2026nepaliasr,
-  title  = {Comparative Analysis of Multilingual Pre-trained Models for Nepali Automatic Speech Recognition},
-  author = {Suman Paudel and Sarbin Sayami},
-  year   = {2026},
-  note   = {Institute of Science and Technology, Tribhuvan University, Nepal}
+@article{paudel2026nepaliasr,
+  title         = {Comparative Analysis of Multilingual Pre-trained Models for Nepali Automatic Speech Recognition},
+  author        = {Paudel, Suman and Sayami, Sarbin},
+  year          = {2026},
+  month         = may,
+  eprint        = {submit/7658766},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI}
 }
 ```
+
+> arXiv:submit/7658766 [cs.AI], 31 May 2026.
 
 ## License
 
