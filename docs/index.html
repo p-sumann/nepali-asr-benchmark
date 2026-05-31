@@ -225,8 +225,7 @@
     </div>
 
     <div class="buttons">
-      <a class="btn primary" href="https://arxiv.org/submit/7658766/view">📄 arXiv</a>
-      <a class="btn" href="paper/nepali_asr_benchmark.pdf">📑 PDF</a>
+      <a class="btn primary" href="paper/nepali_asr_benchmark.pdf">📑 PDF</a>
       <a class="btn" href="https://github.com/p-sumann/nepali-asr-benchmark">💻 Code</a>
       <a class="btn" href="https://huggingface.co/sumanpaudel1997">🤗 Models</a>
       <a class="btn" href="https://huggingface.co/datasets/sumanpaudel1997/nepali-asr-benchmark">📊 Dataset</a>
@@ -235,10 +234,10 @@
 </header>
 
 <!-- ═══════════════════════════ TL;DR ═══════════════════════════ -->
-<section id="tldr">
+<section id="summary">
   <div class="container">
-    <h2>TL;DR</h2>
-    <p class="lead">Six multilingual ASR models, fine-tuned on the same Nepali corpus under one protocol, evaluated on three test sets. The smallest model (94 M params, Indic-family pretrained) ties the largest (809 M, Whisper-Turbo) on in-domain accuracy — and CTC architectures run 29× faster than autoregressive ones.</p>
+    <h2>Summary</h2>
+    <p class="lead">Six multilingual ASR models, fine-tuned on the same Nepali corpus under one protocol, evaluated on three test sets. The smallest model (94 M params, Indic-family pretrained) ties the largest (809 M, Whisper-Turbo) on in-domain accuracy, and CTC architectures run 29× faster than autoregressive ones.</p>
 
     <div class="headline-grid">
       <div class="stat"><div class="n">14.76%</div><div class="l">Best in-domain WER<br>(Whisper-Large-v3-Turbo)</div></div>
@@ -253,7 +252,7 @@
 <section id="abstract">
   <div class="container">
     <h2>Abstract</h2>
-    <p>Multilingual pretrained models nominally support Nepali, yet no controlled benchmark has compared them under a single fine-tuning protocol. We fine-tune six pretrained models (XLSR-53, IndicWav2Vec, MMS-1B, Whisper-Medium, Whisper-Large-v3-Turbo, and Conformer-Hi) spanning CTC self-supervised, autoregressive encoder–decoder, and hybrid Conformer-CTC architectures, on the OpenSLR SLR54 Nepali corpus (~165 hours) using identical preprocessing, splits, optimizer, and family-matched learning-rate schedules. We evaluate Word Error Rate (WER), Character Error Rate (CER), and Real-Time Factor (RTF) on three independent test sets (OpenSLR, FLEURS, Common Voice). Whisper-Large-v3-Turbo (14.76% WER) and IndicWav2Vec (14.89% WER) tie at the top despite a 9× parameter gap and 40× pretraining-data gap, providing direct empirical evidence that <em>language-family proximity in pretraining can substitute for raw scale</em> for in-domain Nepali. CTC decoders run up to 29× faster than autoregressive Whisper at the same accuracy, flipping the practical deployment preference toward CTC under any latency budget. Massively multilingual pretraining (MMS-1B) yields the smallest out-of-domain degradation on FLEURS (+12.55 pp), indicating that scale buys robustness rather than peak in-domain accuracy. The resulting benchmark provides the first standardized, multi-model, efficiency-aware reference numbers for Nepali ASR.</p>
+    <p>Multilingual pretrained models nominally support Nepali, yet no controlled benchmark has compared them under a single fine-tuning protocol. We fine-tune six pretrained models (XLSR-53, IndicWav2Vec, MMS-1B, Whisper-Medium, Whisper-Large-v3-Turbo, and Conformer-Hi) spanning CTC self-supervised, autoregressive encoder-decoder, and hybrid Conformer-CTC architectures, on the OpenSLR SLR54 Nepali corpus (~165 hours) using identical preprocessing, splits, optimizer, and family-matched learning-rate schedules. We evaluate Word Error Rate (WER), Character Error Rate (CER), and Real-Time Factor (RTF) on three independent test sets (OpenSLR, FLEURS, Common Voice). Whisper-Large-v3-Turbo (14.76% WER) and IndicWav2Vec (14.89% WER) tie at the top despite a 9× parameter gap and 40× pretraining-data gap, providing direct empirical evidence that <em>language-family proximity in pretraining can substitute for raw scale</em> for in-domain Nepali. CTC decoders run up to 29× faster than autoregressive Whisper at the same accuracy, flipping the practical deployment preference toward CTC under any latency budget. Massively multilingual pretraining (MMS-1B) yields the smallest out-of-domain degradation on FLEURS (+12.55 pp), indicating that scale buys robustness rather than peak in-domain accuracy. The resulting benchmark provides the first standardized, multi-model, efficiency-aware reference numbers for Nepali ASR.</p>
   </div>
 </section>
 
@@ -263,13 +262,13 @@
     <h2>Key Findings</h2>
     <div class="findings">
       <div class="finding">
-        <strong>1. Language-family proximity beats raw scale.</strong> IndicWav2Vec (94 M params, pretrained on Indic languages) ties Whisper-Large-v3-Turbo (809 M params) on in-domain Nepali WER — 14.89% vs 14.76%. A 9× parameter gap and a 40× pretraining-data gap collapse when the pretraining corpus actually speaks your language family.
+        <strong>1. Language-family proximity beats raw scale.</strong> IndicWav2Vec (94 M params, pretrained on Indic languages) ties Whisper-Large-v3-Turbo (809 M params) on in-domain Nepali WER (14.89% vs 14.76%). A 9× parameter gap and a 40× pretraining-data gap collapse when the pretraining corpus actually speaks your language family.
       </div>
       <div class="finding">
         <strong>2. CTC decoders are 29× faster than autoregressive Whisper at the same accuracy.</strong> For latency-sensitive Nepali ASR deployment (live captioning, IVR, on-device), CTC is the default architecture choice.
       </div>
       <div class="finding">
-        <strong>3. Massive multilingual pretraining buys robustness, not peak accuracy.</strong> MMS-1B has the worst in-domain WER of the six but the smallest degradation on out-of-domain FLEURS (+12.55 pp). Scale isn't accuracy — scale is generalization.
+        <strong>3. Massive multilingual pretraining buys robustness, not peak accuracy.</strong> MMS-1B has the worst in-domain WER of the six but the smallest degradation on out-of-domain FLEURS (+12.55 pp). Scale isn't accuracy; scale is generalization.
       </div>
     </div>
   </div>
@@ -328,20 +327,20 @@
     <h3>🤗 Six fine-tuned Nepali ASR checkpoints</h3>
     <p>Each ships with a usable inference snippet (5 lines) and full configuration. Download once, transcribe locally.</p>
     <ul>
-      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-whisper-turbo"><code>sumanpaudel1997/nepali-asr-whisper-turbo</code></a> — best in-domain (14.76% WER)</li>
-      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-indicwav2vec"><code>sumanpaudel1997/nepali-asr-indicwav2vec</code></a> — ties top with 9× fewer params</li>
+      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-whisper-turbo"><code>sumanpaudel1997/nepali-asr-whisper-turbo</code></a> (best in-domain, 14.76% WER)</li>
+      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-indicwav2vec"><code>sumanpaudel1997/nepali-asr-indicwav2vec</code></a> (ties top with 9× fewer params)</li>
       <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-whisper-medium"><code>sumanpaudel1997/nepali-asr-whisper-medium</code></a></li>
       <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-xlsr-53"><code>sumanpaudel1997/nepali-asr-xlsr-53</code></a></li>
-      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-mms-1b"><code>sumanpaudel1997/nepali-asr-mms-1b</code></a> — best out-of-domain robustness</li>
-      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-conformer-hi"><code>sumanpaudel1997/nepali-asr-conformer-hi</code></a> — NeMo .nemo checkpoint</li>
+      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-mms-1b"><code>sumanpaudel1997/nepali-asr-mms-1b</code></a> (best out-of-domain robustness)</li>
+      <li><a href="https://huggingface.co/sumanpaudel1997/nepali-asr-conformer-hi"><code>sumanpaudel1997/nepali-asr-conformer-hi</code></a> (NeMo .nemo checkpoint)</li>
     </ul>
 
     <h3>📊 Benchmark predictions dataset</h3>
-    <p>Per-utterance reference, hypothesis, WER, and CER for every (model × test set) combination — 18 parquet files in total. Lets anyone re-aggregate metrics, run error analysis, or compare a new system without re-running inference.</p>
+    <p>Per-utterance reference, hypothesis, WER, and CER for every (model × test set) combination: 18 parquet files in total. Lets anyone re-aggregate metrics, run error analysis, or compare a new system without re-running inference.</p>
     <p>→ <a href="https://huggingface.co/datasets/sumanpaudel1997/nepali-asr-benchmark"><code>sumanpaudel1997/nepali-asr-benchmark</code></a></p>
 
     <h3>💻 Reproducible inference scripts</h3>
-    <p>One script per model family in <a href="https://github.com/p-sumann/nepali-asr-benchmark"><code>github.com/p-sumann/nepali-asr-benchmark</code></a>. Training code is intentionally not released; full hyperparameters are in the paper.</p>
+    <p>One script per model family in <a href="https://github.com/p-sumann/nepali-asr-benchmark"><code>github.com/p-sumann/nepali-asr-benchmark</code></a>. Full hyperparameters are in the paper.</p>
   </div>
 </section>
 
