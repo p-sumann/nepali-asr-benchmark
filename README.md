@@ -196,7 +196,3 @@ Institute of Science and Technology, Tribhuvan University**, Kathmandu, Nepal, u
 of **Asst. Prof. Sarbin Sayami** (Central Department of Computer Science and Information Technology).
 We thank the open-source communities behind Wav2Vec 2.0, Whisper, MMS, IndicWav2Vec, and NVIDIA NeMo,
 whose publicly released checkpoints made this controlled comparison possible.
-
-## Contact
-
-Suman Paudel — `dastonsuman1997@gmail.com`
