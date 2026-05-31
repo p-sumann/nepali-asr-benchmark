@@ -131,9 +131,20 @@ so anyone can re-aggregate metrics, run error analysis, or compare new systems
 without re-running inference:
 
 [`sumanpaudel1997/nepali-asr-benchmark`](https://huggingface.co/datasets/sumanpaudel1997/nepali-asr-benchmark)
+
 ```python
+# Load all 18 (model × test set) prediction parquets
 from datasets import load_dataset
 ds = load_dataset("sumanpaudel1997/nepali-asr-benchmark", split="predictions")
+
+# Rebuild the WER table from the paper in two lines of pandas
+import pandas as pd
+df = ds.to_pandas()
+print(
+    df.groupby(["model", "test_set"])["wer"].mean().mul(100).round(2)
+      .unstack("test_set")[["openslr", "fleurs", "common_voice"]]
+      .sort_values("openslr")
+)
 ```
 
 ## Source Datasets (audio not redistributed; obtain from source)
@@ -142,7 +153,7 @@ ds = load_dataset("sumanpaudel1997/nepali-asr-benchmark", split="predictions")
 |---|---|---|---|
 | OpenSLR SLR54 (Nepali) | ~165 | <https://www.openslr.org/54/> | training + in-domain test |
 | FLEURS (ne_np) | ~10 | <https://huggingface.co/datasets/google/fleurs> | curated OOD test |
-| Common Voice (ne-NP) | ~5 | <https://commonvoice.mozilla.org/ne-NP/datasets> | noisy OOD test |
+| Common Voice (ne-NP) | ~5 | <https://mozilladatacollective.com/organization/cmfh0j9o10006ns07jq45h7xk> | noisy OOD test |
 
 Per-dataset citations:
 
