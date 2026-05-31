@@ -26,6 +26,7 @@
       --code-bg:   #0d1117;
       --code-fg:   #e6edf3;
       --max-w:     880px;
+    --max-w-wide: 1180px;       /* wider variant for embedded PDF section */
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -38,6 +39,7 @@
       -webkit-font-smoothing: antialiased;
     }
     .container { max-width: var(--max-w); margin: 0 auto; padding: 0 1.25rem; }
+    .container.wide { max-width: var(--max-w-wide); }
     .nepali { font-family: 'Noto Serif Devanagari', serif; font-weight: 500; }
 
     /* ── Hero ──────────────────────────────────────────────── */
@@ -180,7 +182,9 @@
 
     /* ── PDF embed ─────────────────────────────────────────── */
     .pdf-wrap {
-      width: 100%; aspect-ratio: 8.5/11;
+      width: 100%;
+      height: 90vh;             /* tall and wide instead of letter-page ratio */
+      min-height: 720px;
       border: 1px solid var(--border); border-radius: 8px;
       overflow: hidden; background: var(--bg-soft);
     }
@@ -226,7 +230,6 @@
       <a class="btn" href="https://github.com/p-sumann/nepali-asr-benchmark">💻 Code</a>
       <a class="btn" href="https://huggingface.co/sumanpaudel1997">🤗 Models</a>
       <a class="btn" href="https://huggingface.co/datasets/sumanpaudel1997/nepali-asr-benchmark">📊 Dataset</a>
-      <a class="btn" href="#bibtex">📚 BibTeX</a>
     </div>
   </div>
 </header>
@@ -344,31 +347,12 @@
 
 <!-- ═══════════════════════════ PAPER PREVIEW ═══════════════════════════ -->
 <section id="paper">
-  <div class="container">
+  <div class="container wide">
     <h2>Paper Preview</h2>
     <p>Inline PDF preview · <a href="paper/nepali_asr_benchmark.pdf">download full PDF</a></p>
     <div class="pdf-wrap">
       <iframe src="paper/nepali_asr_benchmark.pdf#view=FitH" title="Paper PDF preview"></iframe>
     </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ BIBTEX ═══════════════════════════ -->
-<section id="bibtex">
-  <div class="container">
-    <h2>Citation</h2>
-    <p>If you use these models, the benchmark numbers, or the per-utterance dataset, please cite:</p>
-    <div class="copy-row"><button class="copy-btn" onclick="copyBib()">copy</button></div>
-<pre id="bib">@article{paudel2026nepaliasr,
-  title         = {Comparative Analysis of Multilingual Pre-trained Models for Nepali Automatic Speech Recognition},
-  author        = {Paudel, Suman and Sayami, Sarbin},
-  year          = {2026},
-  month         = may,
-  eprint        = {submit/7658766},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.AI}
-}</pre>
-    <p style="font-size:0.85rem;color:var(--fg-soft)">Plain-text: Paudel, S. and Sayami, S. (2026). <em>Comparative Analysis of Multilingual Pre-trained Models for Nepali Automatic Speech Recognition</em>. arXiv:submit/7658766 [cs.AI], 31 May 2026. M.Sc. thesis, Institute of Science and Technology, Tribhuvan University, Kathmandu, Nepal.</p>
   </div>
 </section>
 
@@ -386,18 +370,6 @@
     Page template adapted from common academic project-page conventions.
   </div>
 </footer>
-
-<script>
-  function copyBib() {
-    const text = document.getElementById('bib').textContent;
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.querySelector('.copy-btn');
-      const orig = btn.textContent;
-      btn.textContent = '✓ copied';
-      setTimeout(() => { btn.textContent = orig; }, 1500);
-    });
-  }
-</script>
 
 </body>
 </html>
